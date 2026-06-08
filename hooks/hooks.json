@@ -1,0 +1,37 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash hooks/simplify-ignore.sh \"$CLAUDE_TOOL_INPUT\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash hooks/sdd-cache-post.sh \"$CLAUDE_TOOL_INPUT\""
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash hooks/session-start.sh"
+          }
+        ]
+      }
+    ]
+  },
+  "_comment": "Source: addy-skills hooks pattern. Load into Claude Code settings.json"
+}
