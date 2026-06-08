@@ -1,46 +1,51 @@
 # AGENTS.md — ll-vibekit Agent Team
-> Merged from: addyosmani/agent-skills (48K★), garrytan/gstack (107K★), caveman (69K★), bkit (34 agents)
-> Load relevant agents for each task. Not all agents for every task.
+> All available agents. Load specific agents based on task routing.
+> Sources: ECC (209K★) · addy-skills (48K★) · bkit · gstack
 
 ---
 
-## CORE TEAM (always available)
+## CORE TEAM
 
-**Architect** — designs solutions, checks DECISIONS.md, writes PRPs, validates scope
-**Reviewer** — code review against decisions, karpathy rules, project patterns  
-**QA Lead** — defines success criteria, runs tests, blocks completion if criteria unmet
+| Agent | File | Role | When to Use |
+|-------|------|------|-------------|
+| Architect | agents/architect.md | System design, PRP generation, DECISIONS.md compliance | Planning new features |
+| Backend | agents/backend.md | Go Fiber + sqlc + migrations (LL stack) | Go/API work |
+| Frontend | agents/frontend.md | SvelteKit + shadcn-svelte + Tailwind (LL stack) | Svelte/UI work |
+| Mobile | agents/mobile.md | React Native + Expo + iOS + Android | Mobile features |
+| AI Layer | agents/ai-layer.md | FastAPI + PydanticAI + LangGraph + Agno + RAG | AI/expert work |
+| Database | agents/database.md | PostgreSQL + sqlc + goose + RLS | DB migrations |
+| DevOps | agents/devops.md | Coolify + Oracle ARM + Temporal Cloud | Deploy/infra |
+| QA | agents/qa.md | Tests, success criteria verification | Validation |
+| Code Reviewer | agents/code-reviewer.md | Review code vs DECISIONS.md | Code review |
+| Security | agents/security.md | Security audit, OWASP, SQL injection | Security review |
 
----
+## QUALITY CYCLE (bkit PDCA pattern)
+
+| Agent | Role |
+|-------|------|
+| agents/pdca-plan.md | Plan the sprint, write specs |
+| agents/pdca-do.md | Execute the implementation |
+| agents/pdca-check.md | Verify output vs success criteria |
+| agents/pdca-act.md | Fix gaps, update memory |
 
 ## SPECIALIST AGENTS
 
-**Frontend Dev** — SvelteKit, React, React Native, Expo, Astro, shadcn, Tailwind
-**Backend Dev (Go)** — Go Fiber, sqlc, PgBouncer, Temporal, REST
-**Backend Dev (Python)** — FastAPI, PydanticAI, LangGraph, Agno, LiteLLM
-**Mobile Dev (iOS)** — Swift, SwiftUI, Xcode, App Store guidelines
-**Mobile Dev (Android)** — Kotlin, Jetpack Compose, Gradle, Play Store guidelines
-**Database** — PostgreSQL, migrations, RLS, sqlc queries, Qdrant
-**DevOps** — Coolify, Docker, Oracle ARM, Cloudflare, GitHub Actions
-**Security** — OWASP, auth, vault, GDPR, rate limiting, injection prevention
-**AI Layer** — RAG, embeddings, HITL, expert panel, Mem0, Temporal workflows
-**Product Manager** — PRDs, user stories, acceptance criteria, backlog, sprint planning
-**Designer** — UI/UX, design tokens, component library, dark theme, mobile-first
-**Sprint Master** — task breakdown, estimation, velocity, retrospectives
+| Agent | Source | Role |
+|-------|--------|------|
+| agents/pm-lead.md | bkit | Product management, roadmap |
+| agents/pm-prd.md | bkit | Write PRDs from feature requests |
+| agents/chief-of-staff.md | ECC | Cross-team coordination |
+| agents/cavecrew-builder.md | caveman | Token-efficient implementation |
+| agents/cavecrew-reviewer.md | caveman | Token-efficient review |
 
 ---
 
-## AGENT USAGE PATTERN
+## HOW TO ACTIVATE AN AGENT
+
+In Claude Code or Opencode, add to your request:
 ```
-# In .claude/agents/{agent-name}.md
-# Claude Code auto-loads on /agent {name} command
-# Or reference in prompt: "Act as the Mobile Dev agent"
+@agents/architect.md Please review this PRP before I execute it.
+@agents/mobile.md Add push notification support to the React Native app.
 ```
 
----
-
-## SOURCES
-- PM/QA/Sprint agents: popup-studio-ai/bkit-claude-code
-- Code-reviewer, security-auditor: addyosmani/agent-skills  
-- CEO/Designer persona: garrytan/gstack
-- CaveCreW (builder/investigator/reviewer): juliusbrussee/caveman
-- Cross-model agent patterns: shanraisshan/claude-code-best-practice
+Or let the router in CLAUDE.md select automatically based on task type.
