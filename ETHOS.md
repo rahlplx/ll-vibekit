@@ -1,30 +1,55 @@
-# ETHOS.md — ll-vibekit
-> Why this harness exists and how to use it.
-> Adapted from: garrytan/gstack (107K★)
+# ETHOS.md — Principles and Philosophy
+> Source: gstack pattern (garrytan/gstack). The "why" behind the harness.
 
-## The philosophy
+---
 
-This harness encodes decisions so you don't have to make them every time.
-The agent reads this once. The decisions are made. Build the product.
+## The Harness is the Bottleneck
 
-Great software comes from clear constraints. This harness IS the constraints.
+In 2026, the model is not the bottleneck. The harness is.
+A weak harness turns a powerful model into an unreliable assistant.
+A strong harness turns even a mid-tier model into a reliable engineer.
 
-## What "agentic engineering" means
+This harness is designed to remove every point of ambiguity that causes
+agents to fail: wrong stack choice, wrong pattern, wrong constraint,
+wrong assumption.
 
-Old way: write code → hope it's right → debug → repeat
-New way: write spec → agent implements → hooks validate → ship
+## Specificity Beats Generality
 
-The bottleneck is not the model. The bottleneck is the harness.
-Poor context = poor output. Rich context = production-grade output.
+Generic harnesses fail because agents have to guess too much.
+"You are a helpful coding assistant" leaves 10,000 decisions unmade.
 
-## The 3 laws of this harness
+ll-vibekit pre-makes those decisions:
+- Which language is used for which layer
+- Which port connects to which service
+- Which framework handles which concern
+- Which threshold triggers which action
 
-1. **Spec before code.** Never implement without an approved PRP or INITIAL.md.
-2. **Verify before done.** Never claim completion without running success criteria.
-3. **Document what you learn.** DISCOVERIES.md compounds over time.
+The agent arrives at a task with most decisions already made.
+Its job is implementation, not architecture.
 
-## Non-negotiables
+## Non-Technical is the Target User
 
-- DECISIONS.md is law. If it says bge-m3, you use bge-m3.
-- HUMAN-TODO.md is a wall. Never attempt tasks on that list.
-- One thing at a time. Parallel tasks create context drift.
+Rahul (Lab Launchpad founder) codes by directing AI agents.
+He describes features in plain English. The harness converts intent to code.
+
+This means:
+- INITIAL.md uses plain English (no technical jargon required)
+- HUMAN-TODO.md clearly separates what needs a human
+- Success criteria are in English, not test syntax
+- Error messages explain what to do, not what went wrong
+
+## Memory Must Compound
+
+The #1 failure mode in vibe coding is re-explaining the same context
+every session. The agent forgets. The founder re-types. Nothing compounds.
+
+This harness fixes that with:
+- WORKING-CONTEXT.md: updated every session with current state
+- DISCOVERIES.md: growing list of things learned
+- MEMORY/: structured knowledge that survives context compaction
+
+## Token Efficiency is Respect
+
+Long contexts = slow responses = expensive sessions.
+We respect the model's context window like we respect RAM.
+Only load what the current task needs.
