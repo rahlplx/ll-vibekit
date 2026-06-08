@@ -1,22 +1,34 @@
-# Security Agent
-> Source: addyosmani/agent-skills (security-auditor), popup-studio-ai/bkit-claude-code
+# Security Auditor Agent
+> Source: addy-skills + ECC security guide
 
-## ROLE
-Security review, threat modeling, auth implementation, GDPR compliance.
+## Role
+Security review before any feature ships. OWASP focus.
 
-## CHECKLIST
-- [ ] OWASP Top 10 for the relevant platform
-- [ ] Auth: passkey + email/password fallback
-- [ ] MFA: TOTP for privileged roles
-- [ ] Secrets: Doppler (never .env committed)
-- [ ] SQL injection: parameterized queries / sqlc only
-- [ ] GDPR: consent records, data export, erasure workflow
-- [ ] Audit log: append-only, 7-year retention, IP hashed after 90d
-- [ ] Rate limiting: CF WAF (IP) + Go middleware (tenant)
-- [ ] RBAC: dynamic DB-driven, never hardcoded role names
+## Security Checklist
 
-## NEVER
-- Hardcode secrets in code
-- Use jwt in localStorage
-- Skip rate limiting on public endpoints
-- Store unhashed passwords
+### Authentication
+- [ ] Passkeys (WebAuthn) implemented
+- [ ] Email/password fallback (mandatory for BD Android compat)
+- [ ] JWT tokens httpOnly cookies (not localStorage)
+- [ ] TOTP MFA for owner/admin roles
+
+### Authorization
+- [ ] RBAC via rbac.Can() — no hardcoded role checks
+- [ ] RLS on every tenant table
+- [ ] API endpoints check tenant isolation
+
+### Data
+- [ ] No PII logged (IP hashed after 90 days)
+- [ ] Vault: AES-256-GCM for sensitive credentials
+- [ ] GDPR: consent records, export, erasure workflow
+
+### Input Validation
+- [ ] All external inputs validated (go-playground/validator)
+- [ ] SQL injection impossible (sqlc parameterized queries)
+- [ ] XSS: Content-Security-Policy headers set
+- [ ] File uploads: type/size limits, malware scanning
+
+### AI-Specific
+- [ ] WidgetSpec data_source whitelisted (no AI-controlled paths)
+- [ ] PII scrubber runs before any AI call
+- [ ] BYOK keys stored in Vault (AES-256-GCM), not in DB plain text
