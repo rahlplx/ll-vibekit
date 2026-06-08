@@ -1,24 +1,42 @@
 # Test-Driven Development
-> Source: mattpocock/skills (119K★) + addyosmani/agent-skills (48K★)
+> Source: mattpocock/skills (119K★)
 
-## WHEN TO USE
-When implementing any new function, endpoint, component, or expert.
-Write the test first. Implementation second. Always.
+## When to Use
+When implementing any new function, endpoint, or module.
+Write the test first. Then write the implementation.
 
-## STEPS
-1. Write the failing test that describes the behaviour
-2. Run test → confirm it fails
-3. Implement minimum code to make test pass
-4. Run test → confirm it passes
-5. Refactor if needed, tests still pass
+## Steps
+1. Write the test that describes the expected behavior
+2. Run the test — confirm it FAILS (red)
+3. Write the minimal implementation to make it pass
+4. Run the test — confirm it PASSES (green)
+5. Refactor if needed, keeping tests green
 
-## SUCCESS CRITERIA
-- Test exists before implementation
-- Test fails before implementation
-- Test passes after implementation
-- No implementation code changes the test
+## For Go (agencyos-api)
+```go
+// Test first
+func TestCreateHITLEntry(t *testing.T) {
+    entry, err := hitl.Create(ctx, CreateHITLInput{...})
+    require.NoError(t, err)
+    assert.Equal(t, "pending", entry.Status)
+}
+// Then implement hitl.Create()
+```
 
-## PATTERNS
-- Unit: test one function in isolation
-- Integration: test module with real DB (use test container)
-- E2E: test full user flow (Playwright / Maestro for mobile)
+## For Python (agencyos-ai)
+```python
+# pytest
+async def test_e1_expert_returns_confidence():
+    result = await E1ContentExpert().execute(task)
+    assert 0.0 <= result.confidence <= 1.0
+    assert len(result.output) > 0
+```
+
+## For Svelte (agencyos-web)
+```typescript
+// Playwright
+test('HITL queue shows pending items', async ({ page }) => {
+    await page.goto('/app/content')
+    await expect(page.getByTestId('hitl-queue')).toBeVisible()
+})
+```
