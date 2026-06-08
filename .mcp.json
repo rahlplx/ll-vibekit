@@ -1,0 +1,14 @@
+{
+  "_comment": "MCP server configurations for ll-vibekit. Source: ECC pattern.",
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "."
+      ],
+      "_note": "Local file access for agents"
+    }
+  }
+}
