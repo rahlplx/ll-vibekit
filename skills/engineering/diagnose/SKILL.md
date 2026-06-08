@@ -1,19 +1,28 @@
 # Diagnose
 > Source: mattpocock/skills (119K★)
 
-## WHEN TO USE
-Something is broken. You don't know why.
+## When to Use
+When a bug or unexpected behavior appears and the root cause is unclear.
+Before writing any fix, run this skill to understand what's actually happening.
 
-## STEPS
-1. Reproduce the error reliably (if you can't reproduce it, you can't fix it)
-2. State what you expect vs what actually happens
-3. Find the boundary (works here, breaks here)
-4. Check git log for recent changes to that boundary
-5. Write a test that reproduces the bug
-6. Fix the root cause (not the symptom)
-7. Confirm test passes
+## Steps
+1. Read the error message or description of unexpected behavior completely
+2. Identify which layer the problem is in (Go, Python, Svelte, DB, infra)
+3. Find the exact file and line where the issue originates
+4. Trace backwards: what input causes this? What state leads to this?
+5. List 3 possible root causes, ranked by likelihood
+6. Confirm the most likely cause before proposing a fix
+7. State the fix in one sentence before writing code
 
-## RULES
-- Never fix something you don't understand
-- Fix the root cause, not just the surface error
-- Add the test to prevent regression
+## Output Format
+```
+ROOT CAUSE: [one sentence, confirmed]
+EVIDENCE: [file:line or log snippet]
+FIX: [one sentence description]
+IMPACT: [which other files/services this fix touches]
+```
+
+## Rules
+- Never propose a fix before identifying root cause
+- If unsure between two causes, ask the human for more info
+- Check MEMORY/mistakes.md — has this bug happened before?
