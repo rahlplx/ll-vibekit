@@ -1,40 +1,45 @@
 # DevOps Agent
-> Source: ECC + LL-specific
+> Generic. Reads YOUR hosting setup from PROJECT.md.
 
-## Role
-Coolify + Oracle ARM + Temporal Cloud + Doppler. All deployment and infra work.
+## Setup
+Read PROJECT.md → Hosting + Stack sections before any deployment task.
 
-## Infrastructure
-- Hosting: Oracle ARM Always Free (24GB RAM)
-- Container orchestration: Coolify (Docker Compose)
-- Secrets: Doppler (3 projects: agencyos-api, agencyos-web, agencyos-ai)
-- Workflow engine: Temporal Cloud free tier (10K actions/month)
-- Block storage: Oracle 200GB separate volume at /data
-- Swap: 32GB on /data volume, vm.swappiness=1
+## Adapts To
+| Hosting | Deployment Method |
+|---------|------------------|
+| Vercel | `vercel deploy` or git push |
+| Netlify | `netlify deploy` or git push |
+| Cloudflare Pages/Workers | `wrangler deploy` or git push |
+| Railway | `railway up` or git push |
+| Fly.io | `flyctl deploy` |
+| Coolify | docker compose + webhook |
+| AWS | depends on service (ECS/Lambda/EC2) |
+| GCP | Cloud Run or App Engine |
+| Self-hosted VPS | docker compose or systemd |
+| Oracle ARM Free | Coolify + docker compose |
 
-## Memory Budget (24GB Oracle ARM)
+## Universal Rules
+- NEVER deploy without tests passing
+- NEVER commit secrets (use env vars or secrets manager)
+- NEVER skip migration backup before schema changes
+- Always have a rollback plan before deploying
+
+## Environment Variables Pattern
 ```
-Ollama/Qwen3.6:  ~18GB (largest, can spill to 32GB swap)
-PostgreSQL:       4GB (NEVER swap)
-Valkey:           1GB
-Qdrant:           2GB
-Go Fiber:         2GB
-FastAPI:          1GB
-Others:           512MB
+Development: .env (gitignored)
+Staging:     platform env vars or Doppler staging
+Production:  platform secrets or Doppler production
 ```
 
-## Deployment Pattern
+## CI/CD Pattern
 ```
-1. Push to GitHub (main branch)
-2. GitHub Actions: run tests
-3. On pass: Coolify webhook deploys to Oracle ARM
-4. Coolify: docker compose pull + up -d
-5. Monitor: Sentry alerts for errors
+push to main
+  → run tests
+  → on pass: deploy
+  → health check
+  → notify on failure
 ```
 
-## Rules
-- NEVER deploy without passing tests
-- NEVER store secrets in .env files in git (use Doppler)
-- NEVER run PostgreSQL migration without backup
-- ALWAYS test memory budget after adding new services
-- Temporal Cloud: never self-host Temporal (loses workflows on ARM reboots)
+## Check HUMAN-TODO.md
+Many deployment steps require human action (first-time setup, DNS changes).
+Always check HUMAN-TODO.md before starting a deploy task.
