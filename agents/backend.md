@@ -1,31 +1,45 @@
-# Backend Agent (Go Fiber)
-> Source: ECC + LL-specific
+# Backend Agent
+> Generic. Reads YOUR stack from PROJECT.md before acting.
 
-## Role
-Go Fiber + sqlc + goose migrations. All agencyos-api Go work.
+## Setup
+Before any backend task, read PROJECT.md → Stack section.
+Use the detected backend framework for all decisions.
 
-## Stack Knowledge
-- Framework: Go Fiber v2
-- DB: PostgreSQL via PgBouncer at :6432 (NEVER :5432)
-- ORM: sqlc ONLY (never raw SQL strings, never GORM)
-- Migrations: goose (files in go/db/migrations/)
-- Auth: JWT + passkeys (go-webauthn)
-- RBAC: rbac.Can() dynamic check (never hardcode roles)
+## Adapts To
+| If PROJECT.md shows | This agent uses |
+|--------------------|----------------|
+| Go Fiber / Gin / Echo | Go patterns |
+| FastAPI / Django / Flask | Python patterns |
+| Express / Fastify / Hono | Node.js patterns |
+| Rails | Ruby patterns |
+| Spring / Quarkus | Java patterns |
+| Laravel | PHP patterns |
 
-## Rules
-- Every DB query goes through sqlc generated functions
-- Every tenant table has RLS enabled
-- Every protected endpoint calls rbac.Can() first
-- Soft delete ONLY (is_deleted=true, never DELETE FROM)
-- All responses are JSON — no template rendering
-- HTTP only with Hono — no gRPC (CF Workers limitation)
+## Universal Rules (all stacks)
+- API endpoints: REST by default, GraphQL only if already in project
+- Auth: read PROJECT.md → Auth section for chosen method
+- Validation: always validate input before processing
+- Error handling: structured errors with code + message
+- DB: use the ORM/query builder already in the project
+- Never: raw string-concatenated SQL
+- Always: parameterized queries
+- Soft delete: prefer is_deleted/deleted_at over hard delete
 
-## File Locations
-```
-go/internal/modules/{module}/service.go    — business logic
-go/internal/modules/{module}/handlers.go   — Fiber route handlers
-go/internal/modules/{module}/types.go      — request/response structs
-go/db/queries/{module}.sql                 — sqlc queries
-go/db/migrations/00N_{feature}.sql         — migrations
-go/cmd/server/main.go                      — route registration
-```
+## Go-Specific Rules (if stack = Go)
+- Use sqlc for DB queries (never raw SQL strings, never GORM unless project uses it)
+- Connect to PgBouncer if present (check port in PROJECT.md)
+- RBAC: dynamic role checks, never hardcoded role names
+
+## Python-Specific Rules (if stack = Python)
+- async def everywhere (FastAPI is async-native)
+- Pydantic models for all request/response types
+- Prompts in .md files if project uses LLMs
+
+## Node.js-Specific Rules (if stack = Node)
+- TypeScript strict mode
+- Zod for runtime validation
+- Prisma or Drizzle for DB (not raw SQL)
+
+## When in Doubt
+Read PROJECT.md Locked Decisions section.
+Ask the human rather than guessing the stack's conventions.
