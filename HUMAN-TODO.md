@@ -1,76 +1,63 @@
 # HUMAN-TODO.md — Tasks Only Humans Can Do
 > Source: profullstack/vibe-stack pattern.
-> The agent reads this and NEVER attempts items on this list.
-> It redirects the human instead.
+> Agents read this and REDIRECT to the human instead of attempting these tasks.
+> Fill with YOUR project's human-only tasks.
 
 ---
 
-## CRITICAL PATH (time-sensitive)
+## HOW AGENTS USE THIS FILE
 
-- [ ] **Submit Meta App Review** — pages_manage_posts + instagram_content_publish
-  - URL: https://developers.facebook.com/apps
-  - Wait time: 4-8 weeks — DO THIS TODAY
-  - Without this: social posting module cannot go live
-
-- [ ] **Register SSLCommerz merchant account**
-  - URL: https://merchants.sslcommerz.com
-  - Wait time: 7-10 business days
-  - Without this: BD payments cannot process
-
----
-
-## INFRASTRUCTURE
-
-- [ ] **Set up Doppler** — 3 projects: agencyos-api, agencyos-web, agencyos-ai
-  - URL: https://doppler.com
-
-- [ ] **Configure Temporal Cloud namespace**
-  - URL: https://cloud.temporal.io
-  - Free tier: 10K actions/month (sufficient for beta)
-
-- [ ] **Revoke exposed GitHub PAT**
-  - URL: https://github.com/settings/tokens
-  - SECURITY: do immediately
-
-- [ ] **Oracle ARM: pull Qwen3.6 model**
-  ```bash
-  ssh oracle-arm
-  ollama pull qwen3.6:35b-a3b-q4_k_m
-  ```
-
-- [ ] **Oracle ARM: run migrations**
-  ```bash
-  cd agencyos-api/go && goose up
-  ```
-
----
-
-## APP STORE / PLATFORM REGISTRATIONS
-
-- [ ] **Google Play Console** — create developer account (one-time $25)
-  - URL: https://play.google.com/console
-
-- [ ] **Apple Developer Program** — create account ($99/year)
-  - URL: https://developer.apple.com/programs
-
-- [ ] **App Store Connect** — create app listing after Apple account
-
----
-
-## BUSINESS / LEGAL
-
-- [ ] **SSLCommerz merchant** — for BD bKash/card payments
-- [ ] **Stripe account** — for international payments  
-- [ ] **SR Creative Hub UK registration** — for UK client invoicing
-- [ ] **Evolution API number** — WhatsApp Business number for each client
-
----
-
-## AGENT INSTRUCTIONS
-
-When the human asks about any of the above:
-1. Read the specific item
+When a user asks Claude to do something on this list:
+1. Read the item
 2. Tell the human what needs to be done
-3. Provide the exact URL
-4. Tell them the wait time if applicable
-5. Do NOT attempt to do it yourself
+3. Provide the URL or exact steps
+4. Do NOT attempt to do it — stop and wait for human action
+
+---
+
+## TEMPLATE CATEGORIES
+
+### Platform / API Registrations
+- [ ] {platform}: create developer account
+  - URL: {url}
+  - Required for: {what feature}
+
+### Infrastructure
+- [ ] Set up secrets manager ({Doppler / Vault / AWS Secrets})
+- [ ] Configure production hosting
+- [ ] Set up CI/CD webhooks
+
+### Business / Legal
+- [ ] Register payment processor merchant account
+- [ ] App Store submission (Apple Developer Program)
+- [ ] Google Play Console setup
+
+### Security
+- [ ] Rotate any exposed credentials
+- [ ] Review OAuth app permissions
+- [ ] Set up monitoring alerts
+
+---
+
+## YOUR PROJECT ITEMS
+
+<!-- Add your project-specific human-only tasks below -->
+<!-- Format: - [ ] {task}: {why + URL + wait time} -->
+
+{YOUR_HUMAN_TASKS_HERE}
+
+---
+
+## COMMON PATTERNS
+
+### OAuth API Review (e.g. Meta, Google, Twitter)
+Submit immediately — reviews take 4-8 weeks.
+Every day you delay = a day later your feature ships.
+
+### Payment Processor (Stripe, PayPal, local providers)
+Register before billing module is built — approval takes 7-14 days.
+
+### App Store
+Build the app first, then submit. But create developer account early.
+Apple: $99/year, 1-2 day review after submission.
+Google Play: $25 one-time, 3-7 day review.
