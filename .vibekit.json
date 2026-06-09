@@ -1,0 +1,34 @@
+{
+  "_comment": "Per-project ll-vibekit config. Commit this file.",
+  "_usage": "Copy to your project root. Fill in values. Never edit ll-vibekit files directly.",
+
+  "project_name": "your-project-name",
+  "project_root": ".",
+
+  "context_files": {
+    "project":    "PROJECT.md",
+    "context":    "WORKING-CONTEXT.md",
+    "decisions":  "DECISIONS.md",
+    "human_todo": "HUMAN-TODO.md"
+  },
+
+  "test_commands": {
+    "build":    "echo 'Set your build command here'",
+    "test":     "echo 'Set your test command here'",
+    "lint":     "echo 'Set your lint command here'",
+    "migrate":  "echo 'Set your migration command here'"
+  },
+
+  "repos": {
+    "type": "single",
+    "description": "Single-repo project. Set type to multi for multi-repo projects.",
+    "related": []
+  },
+
+  "stack_hints": {
+    "backend_dir": ".",
+    "frontend_dir": ".",
+    "ai_dir": null,
+    "mobile_dir": null
+  }
+}
