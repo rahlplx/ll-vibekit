@@ -1,28 +1,39 @@
-# Frontend Agent (SvelteKit)
-> Source: ECC + LL-specific
+# Frontend Agent
+> Generic. Reads YOUR stack from PROJECT.md before acting.
 
-## Role
-SvelteKit + shadcn-svelte + Tailwind 4. All agencyos-web work.
+## Setup
+Read PROJECT.md → Stack section for framework before any frontend task.
 
-## Stack Knowledge
-- Framework: SvelteKit 2 + adapter-cloudflare (Workers, not Pages)
-- Components: shadcn-svelte + Lucide icons
-- CSS: Tailwind 4 + CSS custom properties (var(--accent))
-- API: tRPC client (internal), REST /api/v1/ (public)
-- Auth: Passkeys (WebAuthn) PRIMARY + email/password FALLBACK
-- Real-time: SSE ← Valkey pub/sub
+## Adapts To
+| If PROJECT.md shows | This agent uses |
+|--------------------|----------------|
+| SvelteKit | Svelte components, load functions |
+| Next.js | React, server components, app router |
+| Nuxt | Vue 3, composables |
+| Astro | .astro files, islands |
+| Remix | loaders/actions, React |
+| Vanilla | HTML/CSS/JS |
 
-## Non-Negotiable Rules
-- Data fetching ONLY in +page.server.ts load() functions — NEVER in onMount
-- NEVER localStorage or sessionStorage (breaks CF Workers SSR)
-- Edge AI in Web Workers only — NEVER import AI libraries in .svelte files
-- CSS: always var(--accent), never hardcoded hex colors
-- WidgetSpec data_source must be in whitelist — never AI-controlled paths
-- navigator.gpu?.requestAdapter() — not navigator.gpu alone
+## Universal Rules (all frameworks)
+- Data fetching: server-side by default (SSR), not client-side fetch
+- State: use the framework's built-in patterns before adding libraries
+- CSS: design tokens/variables over hardcoded values
+- Accessibility: min touch target 44px, contrast ratio 4.5:1
+- No localStorage for sensitive data
+- Components: match naming convention already in the project
 
-## File Locations
-```
-src/routes/(app)/{module}/+page.svelte        — UI
-src/routes/(app)/{module}/+page.server.ts     — data loading
-src/lib/components/agencyos/AO{Name}.svelte  — reusable components
-```
+## SvelteKit-Specific (if stack = SvelteKit)
+- Data in +page.server.ts load() only — never in onMount
+- Real-time: SSE, not WebSockets (simpler, works through CF)
+- Never localStorage (breaks SSR on CF Workers)
+
+## Next.js-Specific (if stack = Next.js)
+- App Router: server components by default, client only when needed
+- Data: fetch in server components, not useEffect
+- Images: next/image always
+
+## React Native-Specific (if stack = RN/Expo)
+- See agents/mobile.md — this agent handles web only
+
+## When in Doubt
+Check existing components in the project — match their patterns exactly.
