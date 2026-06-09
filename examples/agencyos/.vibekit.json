@@ -1,0 +1,40 @@
+{
+  "_comment": "AgencyOS ll-vibekit config. Copy to agencyos-api root.",
+
+  "project_name": "AgencyOS",
+  "project_root": ".",
+
+  "context_files": {
+    "project":    "examples/agencyos/PROJECT.md",
+    "context":    "WORKING-CONTEXT.md",
+    "decisions":  "DECISIONS.md",
+    "human_todo": "HUMAN-TODO.md"
+  },
+
+  "test_commands": {
+    "build":    "cd go && go build ./...",
+    "test":     "cd go && go test ./...",
+    "lint":     "cd go && go vet ./...",
+    "migrate":  "cd go && goose up",
+    "sqlc":     "cd go && sqlc generate",
+    "py_test":  "cd ../agencyos-ai && pytest tests/ -x -q",
+    "web_build": "cd ../agencyos-web && pnpm build"
+  },
+
+  "repos": {
+    "type": "multi",
+    "description": "AgencyOS is 4 repos. This config is for agencyos-api (core).",
+    "related": [
+      {"name": "agencyos-web", "role": "SvelteKit frontend", "path": "../agencyos-web"},
+      {"name": "agencyos-ai",  "role": "Python AI layer",    "path": "../agencyos-ai"},
+      {"name": "agencyos-marketing", "role": "Astro marketing site", "path": "../agencyos-marketing"}
+    ]
+  },
+
+  "stack_hints": {
+    "backend_dir":  "go/",
+    "frontend_dir": "../agencyos-web/src/",
+    "ai_dir":       "../agencyos-ai/src/",
+    "mobile_dir":   null
+  }
+}
