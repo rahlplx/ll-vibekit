@@ -1,42 +1,46 @@
-# MEMORY/mistakes.md — Anti-Patterns Never To Repeat
-> Add entries when something goes wrong.
+# MEMORY/mistakes.md
+> Anti-patterns specific to THIS project.
+> Add entries whenever something goes wrong and is fixed.
+> Prevents repeating the same mistakes.
 
-## DB Mistakes
+---
 
-### gRPC from Hono (CF Workers)
-- **Wrong:** Using gRPC for Hono→Go communication
-- **Why wrong:** CF Workers V8 isolates have no TCP socket
-- **Correct:** HTTP fetch() + X-Internal-Secret header
+## Format
+Each entry:
+```
+### {date} — {brief title}
+WRONG: {what was done wrong}
+RIGHT: {the correct approach}
+WHY:   {why the wrong approach fails}
+```
 
-### bge-base-en-v1.5 for embeddings
-- **Wrong:** Using English-only embedding model
-- **Why wrong:** Bengali content produces near-random vectors
-- **Correct:** BAAI/bge-m3 (multilingual, 1024-dim)
+---
 
-### Passing port 5432 in Go
-- **Wrong:** Go Fiber connecting directly to PostgreSQL :5432
-- **Why wrong:** PgBouncer in transaction mode, not direct
-- **Correct:** Always connect to PgBouncer :6432
+## Universal Anti-Patterns (all projects)
 
-### navigator.gpu without adapter check
-- **Wrong:** `if (navigator.gpu)` — always truthy even without GPU
-- **Correct:** `await navigator.gpu?.requestAdapter()` — actually tests
+### Silent assumption
+WRONG: Assuming what the user wants without asking
+RIGHT: Ask one clarifying question before proceeding
+WHY:   Wrong assumptions build the wrong thing
 
-## Agent Mistakes
+### Over-engineering
+WRONG: Building abstractions before they're needed
+RIGHT: Simplest possible solution that works
+WHY:   Code you don't need is code you have to maintain
 
-### Auto-approve at 0.90 confidence
-- **Wrong:** Using 0.90 threshold
-- **Why wrong:** Models are overconfident. 0.90 lets too many bad outputs through
-- **Correct:** 0.95 threshold
+### Skipping PDCA Check
+WRONG: Marking a task done without testing success criteria
+RIGHT: Test every criterion explicitly before closing
+WHY:   Agent drift — implementation diverges from spec unnoticed
 
-### LangGraph for simple Agno tasks
-- **Wrong:** Using LangGraph for single-expert no-HITL calls (E8, E10, E13)
-- **Why wrong:** 10,000× overhead vs Agno for simple calls
-- **Correct:** Agno for E8/E10/E12/E13, LangGraph for E15 + HITL only
+### Loading all context files
+WRONG: Loading CLAUDE.md + CONTEXT.md + all MEMORY/ + all agents/ at session start
+RIGHT: Load PROJECT.md + WORKING-CONTEXT.md only, load others on demand
+WHY:   Wastes 60-70% of context budget on irrelevant content
 
-## Context Mistakes
+---
 
-### Loading entire DECISIONS.md for every task
-- **Wrong:** Pre-loading all context files every session
-- **Why wrong:** Wastes ~50% of context budget on irrelevant content
-- **Correct:** Load only files relevant to the current task (CLAUDE.md says which)
+## Project-Specific Mistakes
+
+<!-- Add YOUR project's discovered mistakes here -->
+{MISTAKES_WILL_ACCUMULATE_HERE}
