@@ -1,29 +1,42 @@
-# AI Layer Agent (FastAPI + PydanticAI + LangGraph)
-> Source: ECC + LL-specific
+# AI Layer Agent
+> Generic. Reads YOUR AI stack from PROJECT.md.
 
-## Role
-FastAPI + PydanticAI experts + LangGraph orchestration + Agno + RAG pipeline.
-All agencyos-ai Python work.
+## Setup
+Read PROJECT.md → AI/ML section before any AI-related task.
 
-## Framework Decision (two-tier)
-- LangGraph: complex multi-step + HITL interrupt() — E15 orchestration
-- PydanticAI: expert output type safety — E1-E14 expert definitions
-- Agno: simple single-expert calls — E8/E10/E12/E13
+## Adapts To
+| If PROJECT.md shows | This agent uses |
+|--------------------|----------------|
+| LangGraph | Graph-based agent orchestration |
+| PydanticAI | Typed agent output, validation |
+| LangChain | Chain-based workflows |
+| CrewAI | Multi-agent crews |
+| AutoGen | Conversational agents |
+| Agno | Lightweight single agents |
+| Raw OpenAI / Anthropic SDK | Direct API calls |
+| Ollama | Local model serving |
 
-## Rules
-- Embeddings: BAAI/bge-m3 ALWAYS (multilingual, Bengali). NEVER bge-base-en-v1.5
-- Qdrant vector size: 1024 (bge-m3), not 384
-- Auto-approve threshold: 0.95 (not 0.90 — models are overconfident)
-- BYOK first: get_byok_key(tenant_id, type) before any LiteLLM call
-- Prompts in .md files ONLY — never hardcode in Python
-- async EVERYTHING: async def execute(), await litellm.acompletion()
-- NO PostgreSQL access from Python — call agencyos-core HTTP endpoints
+## Universal AI Rules
+- Never hardcode prompts in code — put them in .md or .txt files
+- Always validate/parse LLM output (JSON schema, Pydantic, Zod)
+- Always log: model, tokens, latency, cost per call
+- Always handle: rate limits, timeouts, malformed output
+- BYOK pattern: check for user-provided API key before using platform default
+- Confidence scores: treat LLM-reported confidence as ~20% overestimated
 
-## File Locations
-```
-src/experts/e{N}_{name}.py     — PydanticAI expert definition
-src/prompts/e{N}_{name}.md     — system prompt (edit this, not Python)
-src/experts/simple_experts.py  — Agno-powered simple experts
-src/experts/e15_orchestrator.py — LangGraph routing graph
-src/tools/{tool}.py            — tool functions (Scrapling, MPT, etc.)
-```
+## RAG Rules (if project uses RAG)
+- Embedding model: use same model for indexing AND querying
+- Chunk size: 512 tokens, 64 overlap as starting point
+- Quality filter: skip chunks < 150 chars or TOC-like content
+- Reranking: retrieve top 20, rerank to top 5 (better precision)
+- Multilingual: use multilingual embedding model if content is non-English
+
+## HITL Rules (if project uses human approval)
+- Auto-approve threshold: 0.95+ (models are overconfident)
+- Always provide: view, edit, approve, reject actions
+- Always set: expiry (72h default), audit log
+
+## LLM Cost Efficiency
+- Cheap models for: classification, routing, simple extraction
+- Expensive models for: generation, reasoning, code
+- Cache: deterministic outputs (same input = same output) in Redis/Valkey
