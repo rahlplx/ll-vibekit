@@ -1,56 +1,90 @@
 #!/bin/bash
-# ll-vibekit install script
-# Source: ECC + caveman install.sh pattern
-# Usage: bash install.sh [--project /path/to/your/project]
-
+# ll-vibekit install.sh
+# Universal vibe coding harness installer
+# Usage: bash install.sh [--project /path/to/project]
 set -e
 
 PROJECT="${1:-$(pwd)}"
-VIBEKIT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+KIT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 echo ""
-echo "╔══════════════════════════════════════╗"
-echo "║  ll-vibekit — Lab Launchpad Harness  ║"
-echo "╚══════════════════════════════════════╝"
-echo ""
-echo "Installing into: $PROJECT"
-echo "Harness from:    $VIBEKIT_DIR"
+echo "╔════════════════════════════════════╗"
+echo "║  ll-vibekit — Universal Harness    ║"
+echo "╚════════════════════════════════════╝"
+echo "Project: $PROJECT"
 echo ""
 
-# Create .claude directory in target project
+# Create .claude dirs
 mkdir -p "$PROJECT/.claude/commands"
 mkdir -p "$PROJECT/.claude/hooks"
 
-# Link commands
-echo "→ Linking slash commands..."
-for cmd in "$VIBEKIT_DIR"/.claude/commands/*.md; do
-    cp "$cmd" "$PROJECT/.claude/commands/"
-    echo "  ✓ $(basename $cmd)"
+# Copy slash commands
+echo "→ Installing commands..."
+for f in "$KIT"/.claude/commands/*.md; do
+    cp "$f" "$PROJECT/.claude/commands/"
+    echo "  ✓ $(basename $f)"
 done
 
-# Link hooks
+# Copy hooks
 echo "→ Installing hooks..."
-cp -r "$VIBEKIT_DIR/hooks" "$PROJECT/ll-vibekit-hooks"
-echo "  ✓ hooks/ installed to ll-vibekit-hooks/"
+mkdir -p "$PROJECT/ll-vibekit-hooks"
+cp -r "$KIT/hooks/." "$PROJECT/ll-vibekit-hooks/"
+echo "  ✓ hooks installed"
 
-# Copy INITIAL.md if not exists
-if [ ! -f "$PROJECT/INITIAL.md" ]; then
-    cp "$VIBEKIT_DIR/INITIAL.md" "$PROJECT/INITIAL.md"
-    echo "  ✓ INITIAL.md created"
+# Copy PROJECT.md template if not exists
+if [ ! -f "$PROJECT/PROJECT.md" ]; then
+    cp "$KIT/PROJECT.md" "$PROJECT/PROJECT.md"
+    echo "  ✓ PROJECT.md template created"
 fi
 
-# Copy HUMAN-TODO.md if not exists
+# Copy INITIAL.md template if not exists
+if [ ! -f "$PROJECT/INITIAL.md" ]; then
+    cp "$KIT/INITIAL.md" "$PROJECT/INITIAL.md"
+    echo "  ✓ INITIAL.md template created"
+fi
+
+# Copy WORKING-CONTEXT.md if not exists
+if [ ! -f "$PROJECT/WORKING-CONTEXT.md" ]; then
+    cp "$KIT/WORKING-CONTEXT.md" "$PROJECT/WORKING-CONTEXT.md"
+    echo "  ✓ WORKING-CONTEXT.md created"
+fi
+
+# Copy HUMAN-TODO.md template if not exists
 if [ ! -f "$PROJECT/HUMAN-TODO.md" ]; then
-    cp "$VIBEKIT_DIR/HUMAN-TODO.md" "$PROJECT/HUMAN-TODO.md"
-    echo "  ✓ HUMAN-TODO.md created"
+    cp "$KIT/HUMAN-TODO.md" "$PROJECT/HUMAN-TODO.md"
+    echo "  ✓ HUMAN-TODO.md template created"
+fi
+
+# Create MEMORY/ if not exists
+mkdir -p "$PROJECT/MEMORY"
+for f in stack.md modules.md mistakes.md patterns.md; do
+    if [ ! -f "$PROJECT/MEMORY/$f" ]; then
+        cp "$KIT/MEMORY/$f" "$PROJECT/MEMORY/$f"
+        echo "  ✓ MEMORY/$f template created"
+    fi
+done
+
+# Create PRPs/ if not exists
+mkdir -p "$PROJECT/PRPs/templates"
+if [ ! -f "$PROJECT/PRPs/templates/prp_base.md" ]; then
+    cp "$KIT/PRPs/templates/prp_base.md" "$PROJECT/PRPs/templates/prp_base.md"
+    echo "  ✓ PRPs/templates/prp_base.md created"
+fi
+
+# Run discovery if python3 available
+echo ""
+if command -v python3 &> /dev/null; then
+    echo "→ Running project discovery..."
+    python3 "$KIT/scripts/discover-project.py" "$PROJECT" 2>/dev/null || true
 fi
 
 echo ""
 echo "✅ ll-vibekit installed!"
 echo ""
-echo "Next steps:"
-echo "  1. Fill INITIAL.md with your feature request"
-echo "  2. Open Claude Code in $PROJECT"
-echo "  3. Run: /route"
+echo "NEXT STEPS:"
+echo "  1. Open Claude Code in: $PROJECT"
+echo "  2. Run: /setup discover  (to auto-fill PROJECT.md)"
+echo "     OR edit PROJECT.md manually with your project details"
+echo "  3. Fill INITIAL.md with your first feature"
 echo "  4. Run: /generate-prp INITIAL.md"
 echo ""
