@@ -1,27 +1,28 @@
-# MEMORY/modules.md — All Existing Modules + API Contracts
-> Updated when new modules are added.
+# MEMORY/modules.md
+> Auto-populated by /setup. Updated when modules ship.
+> Prevents agents from building things that already exist.
 
-## AgencyOS Modules
+---
 
-| Module | Go package | Svelte route | AI Expert | Status |
-|--------|-----------|-------------|-----------|--------|
-| auth | modules/auth | (auth)/ | None | ✓ Active |
-| content | modules/content | (app)/content | E1 | ✓ Active |
-| social | modules/social | (app)/social | E3/E8 | ✓ Active |
-| seo | modules/seo | (app)/seo | E2 | ✓ Active |
-| inbox | modules/inbox | (app)/inbox | E6 | ✓ Active |
-| gbp | modules/gbp | (app)/gbp | E7 | ✓ Active |
-| crm | modules/crm | (app)/crm | E5 | ✓ Active |
-| reports | modules/reports | (app)/reports | E9 | ✓ Active |
-| billing | modules/billing | (app)/billing | E10 | ✓ Active |
-| hitl | modules/hitl | (app)/content (shared) | E14 | ✓ Core |
-| vault | modules/vault | (app)/settings | None | ✓ Active |
-| employees | modules/employees | (app)/employees | All | In Progress |
-| workflows | modules/workflows | (app)/workflows | All | In Progress |
-| a2a | (FastAPI only) | None | All | In Progress |
+## Existing Features / Modules
 
-## Key API Patterns
-- All routes: /api/v1/{module}
-- Auth: JWT in httpOnly cookie
-- Tenant isolation: X-Tenant-ID header from Hono → Go middleware sets RLS
-- HITL webhook: PATCH /api/v1/hitl/{id}/review
+| Module       | Status    | Location              | Notes |
+|-------------|-----------|-----------------------|-------|
+| {fill}      | done      | {path}                |       |
+
+## API Routes (if applicable)
+```
+{fill — e.g. GET /api/v1/users, POST /api/v1/posts}
+```
+
+## Database Tables (if applicable)
+```
+{fill — table names + brief description}
+```
+
+## How to Update This File
+When a new module ships:
+1. Add row to modules table
+2. Add its API routes
+3. Add its DB tables
+4. Commit with: "memory: add {module-name} to modules.md"
