@@ -1,23 +1,51 @@
 # {SKILL_NAME}
-> Source: Adapted from garrytan/gstack SKILL.md.tmpl
+> Source: {original-repo} — adapt for your project
 
 ## When to Use
-[Describe exactly when this skill should be activated]
+{Describe exactly when this skill should be activated}
 
 ## Prerequisites
-[List any skills/context that must be loaded first]
+{Any skills or context that must be loaded first}
 
 ## Steps
-1. [First step]
-2. [Second step]
-3. [Third step]
+1. {First step}
+2. {Second step}
+3. {Third step}
 
 ## Output Format
-[What does success look like? Be specific.]
+{What does success look like? Be specific.}
 
 ## Rules
-- [Rule 1]
-- [Rule 2]
+- {Rule 1}
+- {Rule 2}
 
-## Examples
-[Optional: Show a concrete before/after example]
+## Eval Criteria
+- Feature ships without extra PDCA iterations
+- No DECISIONS.md violations in output
+- Scope respected (Karpathy Rule 3)
+
+---
+
+## Skill Metadata
+<!-- Auto-managed by scripts/eval-skills.py -->
+
+```yaml
+version: "1.0"
+source: "{original-repo}"
+created: "{date}"
+last_improved: "never"
+improvement_trigger: "avg_pdca_when_used > 2.5 OR ship_rate < 70%"
+
+stats:
+  times_used: 0
+  avg_pdca_iterations_when_used: 0.0
+  ship_rate_when_used: "0%"
+  last_used: "never"
+
+failure_patterns: []
+
+improvement_log:
+  - version: "1.0"
+    date: "{date}"
+    change: "Initial version"
+```
