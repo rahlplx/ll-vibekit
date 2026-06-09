@@ -8,44 +8,67 @@
 
 | Agent | File | Role | When to Use |
 |-------|------|------|-------------|
-| Architect | agents/architect.md | System design, PRP generation, DECISIONS.md compliance | Planning new features |
-| Backend | agents/backend.md | Go Fiber + sqlc + migrations (LL stack) | Go/API work |
-| Frontend | agents/frontend.md | SvelteKit + shadcn-svelte + Tailwind (LL stack) | Svelte/UI work |
-| Mobile | agents/mobile.md | React Native + Expo + iOS + Android | Mobile features |
-| AI Layer | agents/ai-layer.md | FastAPI + PydanticAI + LangGraph + Agno + RAG | AI/expert work |
-| Database | agents/database.md | PostgreSQL + sqlc + goose + RLS | DB migrations |
-| DevOps | agents/devops.md | Coolify + Oracle ARM + Temporal Cloud | Deploy/infra |
-| QA | agents/qa.md | Tests, success criteria verification | Validation |
-| Code Reviewer | agents/code-reviewer.md | Review code vs DECISIONS.md | Code review |
-| Security | agents/security.md | Security audit, OWASP, SQL injection | Security review |
+| Architect | agents/architect.md | System design, PRP generation | Planning |
+| Backend | agents/backend.md | API, DB, business logic (any stack) | Go/API/Server |
+| Frontend | agents/frontend.md | UI, components (any framework) | Web UI |
+| Mobile | agents/mobile.md | React Native + Expo + iOS + Android | Mobile |
+| AI Layer | agents/ai-layer.md | LLMs, RAG, agents (any framework) | AI features |
+| Database | agents/database.md | Migrations, queries, schema | DB work |
+| DevOps | agents/devops.md | Deploy to any hosting platform | Deployment |
+| QA | agents/qa-lead.md | Tests, success criteria | Validation |
+| Code Reviewer | agents/code-reviewer.md | DECISIONS.md compliance | Review |
+| Security | agents/security.md | Security audit | Before shipping |
 
-## QUALITY CYCLE (bkit PDCA pattern)
+## QUALITY CYCLE (bkit PDCA)
 
 | Agent | Role |
 |-------|------|
-| agents/pdca-plan.md | Plan the sprint, write specs |
-| agents/pdca-do.md | Execute the implementation |
-| agents/pdca-check.md | Verify output vs success criteria |
-| agents/pdca-act.md | Fix gaps, update memory |
+| agents/pdca-plan.md | Plan before coding |
+| agents/pdca-do.md | Implement to spec |
+| agents/pdca-check.md | Verify all criteria |
+| agents/pdca-act.md | Fix + update memory |
 
 ## SPECIALIST AGENTS
 
 | Agent | Source | Role |
 |-------|--------|------|
-| agents/pm-lead.md | bkit | Product management, roadmap |
-| agents/pm-prd.md | bkit | Write PRDs from feature requests |
-| agents/chief-of-staff.md | ECC | Cross-team coordination |
-| agents/cavecrew-builder.md | caveman | Token-efficient implementation |
+| agents/pm-lead.md | bkit | Product management |
+| agents/pm-prd.md | bkit | PRD creation |
+| agents/chief-of-staff.md | ECC | Multi-agent coordination |
+| agents/cavecrew-builder.md | caveman | Token-efficient build |
 | agents/cavecrew-reviewer.md | caveman | Token-efficient review |
 
 ---
 
-## HOW TO ACTIVATE AN AGENT
+## SELF-EVAL REQUIREMENT
 
-In Claude Code or Opencode, add to your request:
+Every agent has a Self-Eval Checklist at the bottom of its file.
+Before returning any output, the agent must internally verify:
+- Output matches user's stated intent
+- No DECISIONS.md violations
+- Karpathy Rule 3: only touched files in scope
+- Success criteria are verifiable commands, not vague statements
+
+## PERFORMANCE TRACKING
+
+Every agent has a Performance section with live stats:
 ```
-@agents/architect.md Please review this PRP before I execute it.
-@agents/mobile.md Add push notification support to the React Native app.
+scripts/eval-agents.py    → updates all agent stats
+/report                   → shows rankings
+/harness-health           → scores all agents 0-100
 ```
 
-Or let the router in CLAUDE.md select automatically based on task type.
+## ACTIVATE AN AGENT
+
+```
+@agents/architect.md Design the notifications module.
+Or: let /route auto-select based on task type.
+```
+
+## IMPROVE AN AGENT
+
+If an agent's ship_rate < 70% after 5+ uses:
+1. Read its failure_patterns in the Performance section
+2. Update its Rules or Steps accordingly
+3. Bump version in improvement_log
+4. Run: python3 scripts/eval-agents.py to reset stats for next period
