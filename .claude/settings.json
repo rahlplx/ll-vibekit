@@ -1,0 +1,23 @@
+{
+  "_instructions": "Copy to ~/.claude/settings.json and replace KIT_PATH with real path",
+  "_setup_guide": "See docs/SETUP-HOOKS.md for full instructions",
+  "hooks": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "bash KIT_PATH/hooks/session-start.sh"
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash KIT_PATH/hooks/sdd-cache-pre.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
