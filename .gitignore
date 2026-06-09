@@ -20,3 +20,7 @@ logs/
 tmp/
 CLAUDE.local.md
 AGENTS.local.md
+
+# Intelligence telemetry (local only)
+.telemetry/
+intelligence/report-*.md
