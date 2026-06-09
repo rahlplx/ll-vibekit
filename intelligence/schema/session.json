@@ -1,0 +1,122 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "title": "ll-vibekit Session Telemetry",
+  "description": "One file per session. Local only. Never committed.",
+  "type": "object",
+  "properties": {
+    "session_id": {
+      "type": "string",
+      "description": "YYYY-MM-DD-HHMMSS"
+    },
+    "project_name": {
+      "type": "string"
+    },
+    "task_description": {
+      "type": "string",
+      "description": "What was asked"
+    },
+    "intent": {
+      "type": "string",
+      "enum": [
+        "build-feature",
+        "fix-bug",
+        "db-change",
+        "ai-feature",
+        "mobile-feature",
+        "deploy",
+        "review",
+        "unknown"
+      ]
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "ended_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "duration_minutes": {
+      "type": "number"
+    },
+    "prp_generated": {
+      "type": "boolean"
+    },
+    "prp_name": {
+      "type": "string"
+    },
+    "prp_quality_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "pdca_iterations": {
+      "type": "integer",
+      "description": "How many check-act cycles"
+    },
+    "feature_shipped": {
+      "type": "boolean"
+    },
+    "agents_used": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "skills_used": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "errors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "file": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "resolved": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "new_patterns": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "new_mistakes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "tokens_estimated": {
+      "type": "integer"
+    },
+    "outcome": {
+      "type": "string",
+      "enum": [
+        "shipped",
+        "abandoned",
+        "in-progress",
+        "blocked"
+      ]
+    }
+  },
+  "required": [
+    "session_id",
+    "project_name",
+    "started_at"
+  ]
+}
